@@ -6,7 +6,14 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:51:15 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/21 17:51:16 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/07/21 18:21:13 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../inc/philo.h"
+
+int main (void)
+{
+	printf("hello, world");
+	return (0);
+}
