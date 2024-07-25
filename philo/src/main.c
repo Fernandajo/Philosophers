@@ -12,8 +12,19 @@
 
 #include "../inc/philo.h"
 
-int main (void)
+int main(int argc, char **argv)
 {
-	printf("hello, Fernanda\n");
+	t_global global;
+
+	if(argc != 5 && argc != 6)
+		error_exit(ERR_ARGS);
+	if(init_philo(argc, argv, &global))
+		error_exit(ERR_INI);
+	printf("Number of philos: %i\n", global.num_of_philo);
+	printf("Time to die: %i\n", global.time_to_die);
+	printf("Time to eat: %i\n", global.time_to_eat);
+	printf("Time to sleep: %i\n", global.time_to_sleep);
+	printf("Number of times they need to eat: %i\n", global.number_of_times_each_philosopher_must_eat);
+
 	return (0);
 }

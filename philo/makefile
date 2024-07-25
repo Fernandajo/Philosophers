@@ -17,6 +17,9 @@ CC      =   cc
 CFLAGS  =   -Wall -Werror -Wextra
 
 SRCS    =   src/main.c \
+			src/error.c \
+			src/init_philo.c \
+			src/utils.c \
 
 OBJS    =   $(SRCS:%.c=out/%.o)
 
