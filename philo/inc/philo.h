@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:17:12 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/21 18:24:09 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/07/28 17:56:10 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,24 @@
 # define ERR_PHI "Error: the number of philosophers should be between 1 and 200"
 # define ERR_INI "Error: initializing "
 
+# define EAT "is eating"
+# define THI "is thinking"
+# define LFORK "has taken the left fork"
+# define RFORK "has taken the right fork"
+# define SLE "is sleeping"
+# define DIE "died"
+
 typedef struct s_philo {
-	
+	pthread_t	thread;
 	int		philo_id;
+	int		eating;
+	int		meals_eaten;
+	int		last_meal;
+	int		local_dead_flag;
+	int		local_lowest_meal;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*left_fork;
+	struct s_global		*global;
 }	t_philo;
 
 typedef struct s_global {
@@ -38,19 +53,34 @@ typedef struct s_global {
 	int time_to_eat;
 	int time_to_die;
 	int time_to_sleep;
-	int	number_of_times_each_philosopher_must_eat;
+	int	number_of_times_must_eat;
+	int	lowest_meal;
+	int	dead_flag;
+	size_t	start_time;
+	pthread_mutex_t	philo_meal_mutex;
+	pthread_mutex_t	monitoring_mutex;
+	pthread_mutex_t	*fork_locks;
+	t_philo	*philos;
 }	t_global;
 
+void	ft_test(t_global *global);
+void	ft_free_mutex(t_global *global);
+
 //Error
-int	ft_strlen(const char *str);
+int		ft_strlen(const char *str);
 void	error_exit(const char *message);
 
 //Utils
-int is_number(const char *str);
+int		is_number(const char *str);
 long	ft_atoi_philo(const char *str);
-int	ft_isdigit(int c);
+int		ft_isdigit(int c);
+int		ft_usleep(size_t milliseconds);
+size_t	get_current_time(void);
 
 //init_philo
-int	init_philo(int argc, char **argv, t_global *global);
+int		init_global(int argc, char **argv, t_global *global);
+int		check_numbers(int argc, char **argv);
+int		init_mutex(t_global *global);
+int		init_philo(t_global *global);
 
 #endif

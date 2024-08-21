@@ -6,7 +6,7 @@
 #    By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/21 18:19:30 by fjoestin          #+#    #+#              #
-#    Updated: 2024/07/21 18:20:32 by fjoestin         ###   ########.fr        #
+#    Updated: 2024/07/27 01:17:20 by fjoestin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRCS    =   src/main.c \
 			src/error.c \
 			src/init_philo.c \
 			src/utils.c \
+			src/free.c \
+			src/tester.c 
 
 OBJS    =   $(SRCS:%.c=out/%.o)
 

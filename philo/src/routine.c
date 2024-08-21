@@ -1,27 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 17:51:15 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/30 14:47:12 by fjoestin         ###   ########.fr       */
+/*   Created: 2024/07/28 15:44:39 by fjoestin          #+#    #+#             */
+/*   Updated: 2024/07/30 14:51:59 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int main(int argc, char **argv)
+void	*philo_routine(void *arg) //comer dormir pensar
 {
-	t_global global;
-
-	if(argc != 5 && argc != 6)
-		error_exit(ERR_ARGS);
-	if(!init_global(argc, argv, &global))
-		error_exit(ERR_INI);
+	t_philo	*philo = (t_philo *)arg;
+	t_global *global = philo->global;
 	
-	//ft_test(&global);
-	ft_free_mutex(&global);
+	while (!global->dead_flag)
+	{
+		get_meals_count(global);
+		if (is_eating(philo))
+		{
+			//update + usleep
+		}
+		
+	}
 	return (0);
+}
+
+void	*monitor(void *arg) //checar por meals eaten and dead
+{
+    t_global *global = (t_global *)arg;
+
+    return (0);
 }

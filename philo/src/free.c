@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/21 17:51:15 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/30 14:47:12 by fjoestin         ###   ########.fr       */
+/*   Created: 2024/07/27 01:13:14 by fjoestin          #+#    #+#             */
+/*   Updated: 2024/07/28 17:56:33 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-int main(int argc, char **argv)
+void	ft_free_mutex(t_global *global)
 {
-	t_global global;
-
-	if(argc != 5 && argc != 6)
-		error_exit(ERR_ARGS);
-	if(!init_global(argc, argv, &global))
-		error_exit(ERR_INI);
+	for (int i = 0; i < global->num_of_philo; i++) {
+	        pthread_mutex_destroy(&global->fork_locks[i]);
+	    }
+	    free(global->fork_locks);
+	    free(global->philos);
 	
-	//ft_test(&global);
-	ft_free_mutex(&global);
-	return (0);
+	    pthread_mutex_destroy(&global->philo_meal_mutex);
+	    pthread_mutex_destroy(&global->monitoring_mutex);
 }
