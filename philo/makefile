@@ -20,7 +20,8 @@ SRCS    =   src/main.c \
 			src/error.c \
 			src/init_philo.c \
 			src/utils.c \
-			src/free.c \
+			src/routine.c \
+			src/update.c \
 
 OBJS    =   $(SRCS:%.c=out/%.o)
 

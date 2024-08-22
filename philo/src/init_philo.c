@@ -11,7 +11,7 @@ int	init_global(int argc, char **argv, t_global *global)
     	global->time_to_sleep = ft_atoi_philo(argv[4]);
 		if (global->num_of_philo <= 0 || global->num_of_philo > 200)
 		{
-			error_exit(ERR_PHI);
+			ft_exit(global, 1, ERR_PHI);
 			return (1);
 		}
 		if(argc == 6)
@@ -83,10 +83,11 @@ int	init_philo(t_global *global)
 	while (i < global->num_of_philo)
 	{
 		global->philos[i].philo_id = i + 1;
+		global->philos[i].eating = 0;
 		global->philos[i].meals_eaten = 0;
 		global->philos[i].last_meal = global->start_time;
 		global->philos[i].local_dead_flag = 0;
-		global->philos[i].global = &global; //check this
+		global->philos[i].global = global; //check this
 		global->philos[i].right_fork = &global->fork_locks[i];
 		global->philos[i].left_fork = &global->fork_locks[(i + 1) % global->num_of_philo];
 		i++;

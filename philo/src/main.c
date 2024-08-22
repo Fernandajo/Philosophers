@@ -14,16 +14,17 @@
 
 int main(int argc, char **argv)
 {
-	t_global global;
+	t_global *global;
 
+	global = NULL;
 	if(argc != 5 && argc != 6)
-		error_exit(ERR_ARGS);
-	if(!init_global(argc, argv, &global))
-		error_exit(ERR_INI);
-	init_philosophers(&global);
-	init_monitor(&global);
-	join_threads(&global);
-	ft_exit(&global, 1, 0);
+		ft_exit(global, 1, ERR_ARGS);
+	if(!init_global(argc, argv, global))
+		ft_exit(global, 1, ERR_INI);
+	init_philosophers(global);
+	init_monitor(global);
+	join_threads(global);
+	ft_exit(global, 1, 0);
 	return (0);
 }
 

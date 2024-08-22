@@ -45,7 +45,7 @@ long	ft_atoi_philo(const char *str)
 		result = result * 10 + str[i++] - '0';
 	}
 	if (((result * sign) > INT_MAX) || ((result * sign) < INT_MIN))
-		error_exit(ERR_MAX);
+		ft_exit(NULL, 1, ERR_MAX);
 	return (result * sign);
 }
 

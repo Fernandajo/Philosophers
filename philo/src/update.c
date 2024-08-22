@@ -16,20 +16,40 @@ void	update(t_global *global, int philo_id, const char *action)
 {
 	pthread_mutex_lock(&global->monitoring_mutex);
 	if (global->dead_flag == ALIVE)
-		printf("%zu %d %s\n", current_time_ms() - global->start_time, philo_id, action);
+		printf("%zu %d %s\n", get_current_time() - global->start_time, philo_id, action);
 	pthread_mutex_unlock(&global->monitoring_mutex);
 }
 
 int	is_eating(t_philo *philo)
 {
-	//check if still have time with last meal time and 
-	if (get_current_time() - )
+	if ((int)get_current_time() - philo->last_meal > philo->global->time_to_die)
 	{
-		/* code */
+		if (take_forks(philo))
+		{
+			pthread_mutex_lock(&philo->global->data_mutex);
+			philo->eating = 1;
+			philo->last_meal = get_current_time();
+			update(philo->global, philo->philo_id, EAT);
+			pthread_mutex_unlock(&philo->global->data_mutex);
+			usleep(philo->global->time_to_eat * 1000);
+			pthread_mutex_unlock(philo->right_fork);
+			pthread_mutex_unlock(philo->left_fork);
+			pthread_mutex_lock(&philo->global->data_mutex);
+			philo->eating = 0;
+			philo->meals_eaten++;
+			pthread_mutex_unlock(&philo->global->data_mutex);
+		}
+		
 	}
-	
-	//check se lowest meal == number of meals
-	// ve se 'e impar ou par
+	else
+	{
+		pthread_mutex_lock(&philo->global->data_mutex);
+		update(philo->global, philo->philo_id, DIE);
+		philo->global->dead_flag = DEAD;
+		pthread_mutex_unlock(&philo->global->data_mutex);
+		return (1);
+	}
+	return (0);
 	//get current time para update do last meal time
 	
 }
@@ -66,10 +86,19 @@ int	handle_one(t_philo *philo)
 	if (philo->global->num_of_philo == 1)
 	{
 		pthread_mutex_lock(&philo->global->data_mutex);
-		print_status(philo, "died");
+		update(philo->global, philo->philo_id, DIE);
 		philo->global->dead_flag = DEAD;
 		pthread_mutex_unlock(&philo->global->data_mutex);
 		return (1);
 	}
 	return (0);
+}
+
+void	is_sleeping(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->global->data_mutex);
+	philo->eating = 0;
+	update(philo->global, philo->philo_id, SLE);
+	pthread_mutex_unlock(&philo->global->data_mutex);
+	usleep(philo->global->time_to_sleep * 1000);
 }

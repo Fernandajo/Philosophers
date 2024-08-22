@@ -12,7 +12,7 @@
 
 #include "../inc/philo.h"
 
-static void	free_forks_locks(t_global *s_global);
+//static void	free_forks_locks(t_global *global);
 
 int	ft_strlen(const char *str)
 {
@@ -24,9 +24,22 @@ int	ft_strlen(const char *str)
 	return (i);
 }
 
+static void	free_fork_locks(t_global *global)
+{
+	int	i;
+
+	i = 0;
+	while (i < global->num_of_philo)
+	{
+		pthread_mutex_destroy(&global->fork_locks[i]);
+		i++;
+	}
+	free(global->fork_locks);
+}
+
 void	ft_exit(t_global *global, int status, const char *message)
 {
-	if(global)
+	if(global != NULL)
 	{
 		if (global->fork_locks)
 			free_fork_locks(global);
@@ -39,17 +52,4 @@ void	ft_exit(t_global *global, int status, const char *message)
 	if (message)
 		write(STDERR_FILENO, message, ft_strlen(message));
 	exit(status);
-}
-
-static void	free_forks_locks(t_global *global)
-{
-	int	i;
-
-	i = 0;
-	while (i < global->num_of_philo)
-	{
-		pthread_mutex_destroy(&global->fork_locks[i]);
-		i++;
-	}
-	free(global->fork_locks);
 }

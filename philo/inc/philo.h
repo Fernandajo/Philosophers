@@ -42,7 +42,7 @@
 typedef struct s_philo {
 	pthread_t		thread;
 	int				philo_id;
-	// int				eating;
+	int				eating;
 	int				meals_eaten;
 	int				last_meal;
 	int				local_dead_flag;
@@ -69,7 +69,6 @@ typedef struct s_global {
 
 //Error
 int		ft_strlen(const char *str);
-static void	free_forks_locks(t_global *global);
 void	ft_exit(t_global *global, int status, const char *message);
 
 
@@ -90,11 +89,12 @@ int		init_philo(t_global *global);
 void	update(t_global *global, int philo_id, const char *action);
 int		take_forks(t_philo *philo);
 int		is_eating(t_philo *philo);
+void	is_sleeping(t_philo *philo);
+int		handle_one(t_philo *philo);
 // routine
-static void	*philo_routine(void *arg);
 void		init_philosophers(t_global *global);
 void		join_threads(t_global *global);
 void		init_monitor(t_global *global);
-static void	*monitor(void *arg);
+
 
 #endif
