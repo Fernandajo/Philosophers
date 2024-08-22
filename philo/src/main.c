@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:51:15 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/30 14:47:12 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:10:17 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,10 @@ int main(int argc, char **argv)
 		error_exit(ERR_ARGS);
 	if(!init_global(argc, argv, &global))
 		error_exit(ERR_INI);
-	
-	//ft_test(&global);
-	ft_free_mutex(&global);
+	init_philosophers(&global);
+	init_monitor(&global);
+	join_threads(&global);
+	ft_exit(&global, 1, 0);
 	return (0);
 }
+

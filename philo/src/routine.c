@@ -6,32 +6,86 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 15:44:39 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/07/30 14:51:59 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/22 20:23:18 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-void	*philo_routine(void *arg) //comer dormir pensar
+static void	*philo_routine(void *arg) //comer dormir pensar
 {
 	t_philo	*philo = (t_philo *)arg;
 	t_global *global = philo->global;
 	
-	while (!global->dead_flag)
+	while (1)
 	{
-		get_meals_count(global);
 		if (is_eating(philo))
 		{
-			//update + usleep
+			update(global, philo->philo_id, EAT);
+			usleep(philo->global->time_to_eat * 1000);
 		}
+		is
 		
 	}
 	return (0);
 }
 
-void	*monitor(void *arg) //checar por meals eaten and dead
+void	init_philosophers(t_global *global)
 {
-    t_global *global = (t_global *)arg;
+	int	i;
 
-    return (0);
+	i = 0;
+	while (i < global->num_of_philo)
+	{
+		if (pthread_create(&global->philos[i].thread, NULL, philo_routine, &global->philos[i]) != 0)
+			ft_exit(global, 1, ERR_INI);
+		i++;
+	}
+}
+
+void	join_threads(t_global *global)
+{
+	int	i;
+
+	i = 0;
+	while (i < global->num_of_philo)
+	{
+		if (pthread_join(global->philos[i].thread, NULL) != 0)
+			ft_exit(global, 1, ERR_JOI);
+		i++;
+	}
+	phthread_join(global->monitor, NULL)
+}
+
+void	init_monitor(t_global *global)//checar por meals eaten and dead
+{
+	if (pthread_create(&global->monitor, NULL, monitor, &global) != 0)
+		ft_exit(global, 1, ERR_INI);
+}
+
+static void *monitor(void *arg)
+{
+	t_global *global = (t_global *)arg;
+    while (!global->dead_flag) {
+        for (int i = 0; i < global->num_of_philo; i++) {
+            t_philo *philo = &global->philos[i];
+            if (!philo->eating && (get_current_time() - philo->last_meal > global->time_to_die)) {
+                update(global, philo->philo_id, DIE);
+                global->dead_flag = 1;
+                break;
+            }
+        }
+
+        int all_ate = 1;
+        for (int i = 0; i < global->num_of_philo; i++) {
+            if (global->number_of_times_must_eat != -1 && global->philos[i].meals_eaten < global->number_of_times_must_eat) {
+                all_ate = 0;
+                break;
+            }
+        }
+        if (all_ate) {
+            global->dead_flag = 1;
+        }
+    }
+    return NULL;
 }

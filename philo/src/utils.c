@@ -58,6 +58,7 @@ int	ft_usleep(size_t milliseconds)
 		usleep(500);
 	return (0);
 }
+
 size_t	get_current_time(void)
 {
 	struct timeval	time;
