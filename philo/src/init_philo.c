@@ -1,36 +1,28 @@
 
 #include "../inc/philo.h"
 
-int	init_global(int argc, char **argv, t_global *global)
+t_global	*init_global(int argc, char **argv, t_global *global)
 {
 	if(check_numbers(argc, argv) == 0)
 	{
+		global = (t_global *)malloc(sizeof(t_global));
 		global->num_of_philo = ft_atoi_philo(argv[1]);
     	global->time_to_die = ft_atoi_philo(argv[2]);
     	global->time_to_eat = ft_atoi_philo(argv[3]);
     	global->time_to_sleep = ft_atoi_philo(argv[4]);
 		if (global->num_of_philo <= 0 || global->num_of_philo > 200)
-		{
 			ft_exit(global, 1, ERR_PHI);
-			return (1);
-		}
 		if(argc == 6)
 			global->number_of_times_must_eat = ft_atoi_philo(argv[5]);
 		else
 			global->number_of_times_must_eat = -1;
 		global->dead_flag = 0;
 	}
-	if (!init_mutex(global))
-	{
+	if (init_mutex(global))
 		ft_exit(global, 1, ERR_MUT);
-		return (1);
-	}
-	if (!init_philo(global))
-	{
+	if (init_philo(global))
 		ft_exit(global, 1, ERR_INI);
-		return (1);	
-	}
-	return (0);
+	return (global);
 }
 
 int	check_numbers(int argc, char **argv)
@@ -56,16 +48,14 @@ int	init_mutex(t_global *global)
 
 	i = 0;
 	global->start_time = get_current_time();
-	if (pthread_mutex_init(&global->data_mutex, NULL) != 0)
-		return (1);
-	if (pthread_mutex_init(&global->monitoring_mutex, NULL) != 0)
-		return(1);
-	global->fork_locks = malloc(global->num_of_philo * sizeof(pthread_mutex_t));
+	pthread_mutex_init(&global->data_mutex, NULL);
+	pthread_mutex_init(&global->monitoring_mutex, NULL);
+	global->fork_locks = (pthread_mutex_t *)malloc(global->num_of_philo * sizeof(pthread_mutex_t));
 	if (!global->fork_locks)
 		return (1);
 	while(i < global->num_of_philo)
 	{
-		if (pthread_mutex_init(&global->fork_locks[i], NULL) != 0)
+		if (pthread_mutex_init(&global->fork_locks[i], NULL))
 			return (1);
 		i++;
 	}

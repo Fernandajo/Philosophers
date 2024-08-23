@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:17:12 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/22 20:07:46 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:33:47 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,15 +80,15 @@ int		ft_usleep(size_t milliseconds);
 size_t	get_current_time(void);
 
 //init_philo
-int		init_global(int argc, char **argv, t_global *global);
-int		check_numbers(int argc, char **argv);
-int		init_mutex(t_global *global);
-int		init_philo(t_global *global);
+t_global	*init_global(int argc, char **argv, t_global *global);
+int			check_numbers(int argc, char **argv);
+int			init_mutex(t_global *global);
+int			init_philo(t_global *global);
 
 // update
 void	update(t_global *global, int philo_id, const char *action);
-int		take_forks(t_philo *philo);
-int		is_eating(t_philo *philo);
+int		took_forks(t_philo *philo);
+void		is_eating(t_philo *philo);
 void	is_sleeping(t_philo *philo);
 int		handle_one(t_philo *philo);
 // routine

@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:51:15 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/22 20:10:17 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/23 14:55:01 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ int main(int argc, char **argv)
 	global = NULL;
 	if(argc != 5 && argc != 6)
 		ft_exit(global, 1, ERR_ARGS);
-	if(!init_global(argc, argv, global))
-		ft_exit(global, 1, ERR_INI);
+	global = init_global(argc, argv, global);
 	init_philosophers(global);
 	init_monitor(global);
 	join_threads(global);

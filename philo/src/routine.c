@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 15:44:39 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/22 20:23:18 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/23 15:52:39 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ static void	*philo_routine(void *arg) //comer dormir pensar
 	{
 /* 		if (global->dead_flag == DEAD)
 			break; */
-		if (is_eating(philo))
+		if (took_forks(philo))
 			continue;
+		is_eating(philo);
 		is_sleeping(philo);
 		update(global, philo->philo_id, THI);
 	}
@@ -56,7 +57,7 @@ void	join_threads(t_global *global)
 			ft_exit(global, 1, ERR_JOI);
 		i++;
 	}
-	//pthread_join(global->monitor, NULL);
+	pthread_join(global->monitor, NULL);
 }
 
 void	init_monitor(t_global *global)//checar por meals eaten and dead
@@ -68,6 +69,7 @@ void	init_monitor(t_global *global)//checar por meals eaten and dead
 static void *monitor(void *arg)
 {
 	t_global *global = (t_global *)arg;
+	t_philo *philo = global->philos;
 	int	i;
 	int	j;
 	int	all_ate;
@@ -79,19 +81,16 @@ static void *monitor(void *arg)
 	{
         while(i < global->num_of_philo)
 		{
-            t_philo *philo = &global->philos[i];
-
-            if (!philo->eating && ((int)get_current_time() - philo->last_meal > global->time_to_die)) {
-                update(global, philo->philo_id, DIE);
+            if (philo[i].eating == 0 && ((int)get_current_time() - philo[i].last_meal > global->time_to_die)) {
+                update(global, philo[i].philo_id, DIE);
                 global->dead_flag = 1;
                 break;
             }
 			i++;
         }
-
         while (j < global->num_of_philo) 
 		{
-            if (global->number_of_times_must_eat != -1 && global->philos[i].meals_eaten < global->number_of_times_must_eat) {
+            if (global->number_of_times_must_eat != -1 && philo[j].meals_eaten < global->number_of_times_must_eat) {
                 all_ate = 0;
                 break;
             }
