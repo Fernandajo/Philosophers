@@ -13,7 +13,6 @@
 #include "../inc/philo.h"
 
 void	init_philosophers(t_global *global);
-// void	*monitor(void *arg);
 
 static void	*philo_routine(void *arg) //comer dormir pensar
 {
@@ -64,65 +63,11 @@ void	join_threads(t_global *global)
 	}
 }
 
-/* void	init_monitor(t_global *global)//checar por meals eaten and dead
-{
-	if (pthread_create(&global->monitor, NULL, &monitor, &global) != 0)
-		ft_exit(global, 1, ERR_INI);
-	pthread_join(global->monitor, NULL);
-}
-
-void	*monitor(void *arg)
-{
-	t_global *global = (t_global *)arg;
-    t_philo *philo = global->philos;
-    int i;
-    int j;
-    int all_ate;
-	
-    i = 0;
-    all_ate = 1;
-    j = 0;
-    while (1)
-    {
-        i = 0;
-        while(i < global->num_of_philo)
-        {
-            if (philo[i].eating == 0 && ((int)get_current_time() - philo[i].last_meal > global->time_to_die)) {
-                update(global, philo[i].philo_id, DIE);
-				pthread_mutex_lock(&global->data_mutex);
-                global->dead_flag = DEAD;
-				pthread_mutex_unlock(&global->data_mutex);
-				break;
-                // ft_exit(global, 0, NULL);
-            }
-            i++;
-        }
-        j = 0;
-        while (j < global->num_of_philo)
-        {
-            if (global->number_of_times_must_eat != -1 && philo[j].meals_eaten < global->number_of_times_must_eat) {
-                all_ate = 0;
-                break;
-            }
-            j++;
-        }
-        if (all_ate || global->dead_flag == DEAD)
-        {
-            pthread_mutex_lock(&global->data_mutex);
-			global->dead_flag = DEAD;
-			pthread_mutex_unlock(&global->data_mutex);
-			break;
-            // ft_exit(global, 0, NULL);
-        }
-    }
-	return (0);
-} */
-
 void	monitor(t_global *global)
 {
 	while (42)
 	{
-		usleep(500);
+		usleep(600);
 		if(somebody_died(global) == DEAD)
 			return ;
 		if (all_ate(global) == DEAD)

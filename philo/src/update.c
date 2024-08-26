@@ -78,9 +78,6 @@ int	handle_one(t_philo *philo)
 
 void	is_sleeping(t_philo *philo)
 {
-/* 	pthread_mutex_lock(&philo->global->data_mutex);
-	philo->eating = 0; */
 	update(philo->global, philo->philo_id, SLE);
-	// pthread_mutex_unlock(&philo->global->data_mutex);
 	usleep(philo->global->time_to_sleep * 1000);
 }
