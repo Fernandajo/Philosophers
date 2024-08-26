@@ -35,6 +35,7 @@ void	ft_exit(t_global *global, int status, const char *message)
 			free(global->philos);
 		pthread_mutex_destroy(&global->data_mutex);
 		pthread_mutex_destroy(&global->monitoring_mutex);
+		pthread_mutex_destroy(&global->dead_flag_mutex);
 		free(global);
 	}
 	if (message)

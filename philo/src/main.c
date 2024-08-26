@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 	if(argc != 5 && argc != 6)
 		ft_exit(global, 1, ERR_ARGS);
 	global = init_global(argc, argv, global);
-	init_philosophers(global);
+	init_routine(global);
 	monitor(global);
 	join_threads(global);
 	ft_exit(global, 1, 0);

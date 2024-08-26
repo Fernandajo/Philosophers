@@ -31,8 +31,7 @@
 
 # define EAT "is eating"
 # define THI "is thinking"
-# define LFORK "has taken the left fork"
-# define RFORK "has taken the right fork"
+# define FORK "has taken a fork"
 # define SLE "is sleeping"
 # define DIE "died"
 
@@ -59,6 +58,7 @@ typedef struct s_global {
 	int				number_of_times_must_eat;
 	int				dead_flag;
 	time_t			start_time;
+	pthread_mutex_t	dead_flag_mutex;
 	pthread_mutex_t	data_mutex;
 	pthread_mutex_t	monitoring_mutex;
 	pthread_mutex_t	*fork_locks;
@@ -89,9 +89,9 @@ void		update(t_global *global, int philo_id, const char *action);
 int			is_taking_the_forks(t_philo *philo);
 void		is_eating(t_philo *philo);
 void		is_sleeping(t_philo *philo);
-int			handle_one(t_philo *philo);
+int			only_one(t_philo *philo);
 // routine
-void		init_philosophers(t_global *global);
+void		init_routine(t_global *global);
 void		join_threads(t_global *global);
 void		monitor(t_global *global);
 int			all_ate(t_global *global);

@@ -19,14 +19,15 @@ static void	*philo_routine(void *arg) //comer dormir pensar
 	t_philo	*philo = (t_philo *)arg;
 	t_global *global = philo->global;
 	
-	while (1)
+	while (global->dead_flag != DEAD)
 	{
-		pthread_mutex_lock(&philo->global->data_mutex);
-		if (global->dead_flag == DEAD){
-			pthread_mutex_unlock(&philo->global->data_mutex);
+/* 		pthread_mutex_lock(&philo->global->dead_flag_mutex);
+		if (global->dead_flag == DEAD)
+		{
+			pthread_mutex_unlock(&philo->global->dead_flag_mutex);
 			return (0);
 		}
-		pthread_mutex_unlock(&philo->global->data_mutex);
+		pthread_mutex_unlock(&philo->global->dead_flag_mutex); */
 		if (is_taking_the_forks(philo))
 			continue;
 		is_eating(philo);
@@ -36,7 +37,7 @@ static void	*philo_routine(void *arg) //comer dormir pensar
 	return (0);
 }
 
-void	init_philosophers(t_global *global)
+void	init_routine(t_global *global)
 {
 	int	i;
 
@@ -67,7 +68,7 @@ void	monitor(t_global *global)
 {
 	while (42)
 	{
-		usleep(600);
+		usleep(200);
 		if(somebody_died(global) == DEAD)
 			return ;
 		if (all_ate(global) == DEAD)
@@ -83,21 +84,21 @@ int	all_ate(t_global *global)
 	while (i < global->num_of_philo)
 	{
 		if (global->number_of_times_must_eat != -1)
-		{	pthread_mutex_lock(&global->data_mutex);
+		{	pthread_mutex_lock(&global->dead_flag_mutex);
 			if (global->philos[i].meals_eaten >= global->number_of_times_must_eat)
 			{
 				global->dead_flag = DEAD;
-				pthread_mutex_unlock(&global->data_mutex);
+				pthread_mutex_unlock(&global->dead_flag_mutex);
 				return(DEAD);
 			}
-			pthread_mutex_unlock(&global->data_mutex);
+			pthread_mutex_unlock(&global->dead_flag_mutex);
 		}
 		i++;
 	}
 	return(ALIVE);
 }
 
-int	somebody_died(t_global *global)
+/* int	somebody_died(t_global *global)
 {
 	int		i;
 	size_t	time;
@@ -120,6 +121,27 @@ int	somebody_died(t_global *global)
 			return (DEAD);
 		}
 		pthread_mutex_unlock(&global->data_mutex);
+		i++;
+	}
+	return(ALIVE);
+} */
+
+int	somebody_died(t_global *global)
+{
+	int	i;
+
+	i = 0;
+	while (i < global->num_of_philo)
+	{
+		pthread_mutex_lock(&global->dead_flag_mutex);
+		if (global->philos[i].local_dead_flag == DEAD)
+		{
+			update(global, global->philos[i].philo_id, DIE);
+			global->dead_flag = DEAD;
+			pthread_mutex_unlock(&global->dead_flag_mutex);
+			return (DEAD);
+		}
+		pthread_mutex_unlock(&global->dead_flag_mutex);
 		i++;
 	}
 	return(ALIVE);

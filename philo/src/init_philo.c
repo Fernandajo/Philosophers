@@ -51,6 +51,7 @@ int	init_mutex(t_global *global)
 	global->start_time = 0;
 	pthread_mutex_init(&global->data_mutex, NULL);
 	pthread_mutex_init(&global->monitoring_mutex, NULL);
+	pthread_mutex_init(&global->dead_flag_mutex, NULL);
 	global->fork_locks = (pthread_mutex_t *)malloc(global->num_of_philo * sizeof(pthread_mutex_t));
 	if (!global->fork_locks)
 		return (1);
