@@ -12,7 +12,7 @@
 
 #include "../inc/philo.h"
 
-void	init_philosophers(t_global *global);
+void	init_routine(t_global *global);
 
 static void	*philo_routine(void *arg) //comer dormir pensar
 {
@@ -21,13 +21,6 @@ static void	*philo_routine(void *arg) //comer dormir pensar
 	
 	while (global->dead_flag != DEAD)
 	{
-/* 		pthread_mutex_lock(&philo->global->dead_flag_mutex);
-		if (global->dead_flag == DEAD)
-		{
-			pthread_mutex_unlock(&philo->global->dead_flag_mutex);
-			return (0);
-		}
-		pthread_mutex_unlock(&philo->global->dead_flag_mutex); */
 		if (is_taking_the_forks(philo))
 			continue;
 		is_eating(philo);
@@ -97,34 +90,6 @@ int	all_ate(t_global *global)
 	}
 	return(ALIVE);
 }
-
-/* int	somebody_died(t_global *global)
-{
-	int		i;
-	size_t	time;
-	
-	i = 0;
-	while (i < global->num_of_philo)
-	{
-		time = get_current_time();
-		pthread_mutex_lock(&global->data_mutex);
-		if (global->dead_flag == DEAD)
-		{
-			pthread_mutex_unlock(&global->data_mutex);
-			return (DEAD);
-		}
-		if (global->philos[i].eating == 0 && ((int)time - global->philos[i].last_meal > global->time_to_die))
-		{
-			update(global, global->philos[i].philo_id, DIE);
-			global->dead_flag = DEAD;
-			pthread_mutex_unlock(&global->data_mutex);
-			return (DEAD);
-		}
-		pthread_mutex_unlock(&global->data_mutex);
-		i++;
-	}
-	return(ALIVE);
-} */
 
 int	somebody_died(t_global *global)
 {

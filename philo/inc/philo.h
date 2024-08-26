@@ -41,7 +41,6 @@
 typedef struct s_philo {
 	pthread_t		thread;
 	int				philo_id;
-	int				eating;
 	int				meals_eaten;
 	int				last_meal;
 	int				local_dead_flag;

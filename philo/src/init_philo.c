@@ -75,7 +75,6 @@ int	init_philo(t_global *global)
 	while (i < global->num_of_philo)
 	{
 		global->philos[i].philo_id = i + 1;
-		global->philos[i].eating = 0;
 		global->philos[i].meals_eaten = 0;
 		global->philos[i].last_meal = 0;
 		global->philos[i].local_dead_flag = 0;

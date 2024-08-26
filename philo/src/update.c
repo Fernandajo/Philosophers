@@ -25,13 +25,11 @@ void	is_eating(t_philo *philo)
 	update(philo->global, philo->philo_id, EAT);
 	pthread_mutex_lock(&philo->global->data_mutex);
 	philo->last_meal = get_current_time();
-	philo->eating = 1;
 	pthread_mutex_unlock(&philo->global->data_mutex);
 	ft_usleep(philo->global->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_lock(&philo->global->data_mutex);
-	philo->eating = 0;
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->global->data_mutex);
 }
