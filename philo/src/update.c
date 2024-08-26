@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   update.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mdomnik <mdomnik@student.42berlin.de>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/28 15:56:23 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/26 13:51:28 by mdomnik          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../inc/philo.h"
 
@@ -16,7 +5,7 @@ void	update(t_global *global, int philo_id, const char *action)
 {
 	pthread_mutex_lock(&global->monitoring_mutex);
 	if (global->dead_flag == ALIVE)
-		printf("%zu: Philo %d %s\n", get_current_time() - global->start_time, philo_id, action);
+		printf("%zu %d %s\n", get_current_time() - global->start_time, philo_id, action);
 	pthread_mutex_unlock(&global->monitoring_mutex);
 }
 
