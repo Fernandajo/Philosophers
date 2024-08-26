@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdomnik <mdomnik@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:17:12 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/23 15:33:47 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/26 14:32:09 by mdomnik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct s_philo {
 }	t_philo;
 
 typedef struct s_global {
-	pthread_t		monitor;
 	int				num_of_philo;
 	int				time_to_eat;
 	int				time_to_die;
@@ -68,16 +67,16 @@ typedef struct s_global {
 
 
 //Error
-int		ft_strlen(const char *str);
-void	ft_exit(t_global *global, int status, const char *message);
-
+int			ft_strlen(const char *str);
+void		ft_exit(t_global *global, int status, const char *message);
+// static void	free_fork_locks(t_global *global);
 
 //Utils
-int		is_number(const char *str);
-long	ft_atoi_philo(const char *str);
-int		ft_isdigit(int c);
-int		ft_usleep(size_t milliseconds);
-size_t	get_current_time(void);
+int			is_number(const char *str);
+long		ft_atoi_philo(const char *str);
+int			ft_isdigit(int c);
+int			ft_usleep(size_t milliseconds);
+size_t		get_current_time(void);
 
 //init_philo
 t_global	*init_global(int argc, char **argv, t_global *global);
@@ -86,15 +85,16 @@ int			init_mutex(t_global *global);
 int			init_philo(t_global *global);
 
 // update
-void	update(t_global *global, int philo_id, const char *action);
-int		took_forks(t_philo *philo);
+void		update(t_global *global, int philo_id, const char *action);
+int			is_taking_the_forks(t_philo *philo);
 void		is_eating(t_philo *philo);
-void	is_sleeping(t_philo *philo);
-int		handle_one(t_philo *philo);
+void		is_sleeping(t_philo *philo);
+int			handle_one(t_philo *philo);
 // routine
 void		init_philosophers(t_global *global);
 void		join_threads(t_global *global);
-void		init_monitor(t_global *global);
-
+void		monitor(t_global *global);
+int			all_ate(t_global *global);
+int			somebody_died(t_global *global);
 
 #endif

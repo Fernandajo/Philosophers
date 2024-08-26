@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   update.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mdomnik <mdomnik@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 15:56:23 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/08/23 15:47:26 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/08/26 13:51:28 by mdomnik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ void	update(t_global *global, int philo_id, const char *action)
 
 void	is_eating(t_philo *philo)
 {
-/* 	if ((int)get_current_time() - philo->last_meal > philo->global->time_to_die)
-	{ */
 	update(philo->global, philo->philo_id, EAT);
 	pthread_mutex_lock(&philo->global->data_mutex);
 	philo->last_meal = get_current_time();
@@ -36,22 +34,9 @@ void	is_eating(t_philo *philo)
 	philo->eating = 0;
 	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->global->data_mutex);
-
-	// }
-/* 	else
-	{
-		pthread_mutex_lock(&philo->global->data_mutex);
-		update(philo->global, philo->philo_id, DIE);
-		philo->global->dead_flag = DEAD;
-		pthread_mutex_unlock(&philo->global->data_mutex);
-		return (1);
-	}
-	return (0); */
-	//get current time para update do last meal time
-	
 }
 
-int	took_forks(t_philo *philo)
+int	is_taking_the_forks(t_philo *philo)
 {
 	if (philo->philo_id % 2 == 0)
 	{

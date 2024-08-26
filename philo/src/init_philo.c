@@ -16,7 +16,8 @@ t_global	*init_global(int argc, char **argv, t_global *global)
 			global->number_of_times_must_eat = ft_atoi_philo(argv[5]);
 		else
 			global->number_of_times_must_eat = -1;
-		global->dead_flag = 0;
+		global->dead_flag = ALIVE;
+		global->start_time = 0;
 	}
 	if (init_mutex(global))
 		ft_exit(global, 1, ERR_MUT);
@@ -47,7 +48,7 @@ int	init_mutex(t_global *global)
 	int	i;
 
 	i = 0;
-	global->start_time = get_current_time();
+	global->start_time = 0;
 	pthread_mutex_init(&global->data_mutex, NULL);
 	pthread_mutex_init(&global->monitoring_mutex, NULL);
 	global->fork_locks = (pthread_mutex_t *)malloc(global->num_of_philo * sizeof(pthread_mutex_t));
@@ -75,11 +76,17 @@ int	init_philo(t_global *global)
 		global->philos[i].philo_id = i + 1;
 		global->philos[i].eating = 0;
 		global->philos[i].meals_eaten = 0;
-		global->philos[i].last_meal = global->start_time;
+		global->philos[i].last_meal = 0;
 		global->philos[i].local_dead_flag = 0;
 		global->philos[i].global = global; //check this
 		global->philos[i].right_fork = &global->fork_locks[i];
-		global->philos[i].left_fork = &global->fork_locks[(i + 1) % global->num_of_philo];
+		if (global->num_of_philo > 1)
+		{
+			global->philos[i].left_fork = &global->fork_locks[(i + 1) % global->num_of_philo];
+		}
+		else
+			global->philos[i].left_fork = NULL;
+		
 		i++;
 	}
 	return (0);
