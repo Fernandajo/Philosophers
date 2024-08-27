@@ -11,56 +11,51 @@ void	update(t_global *global, int philo_id, const char *action)
 
 void	is_eating(t_philo *philo)
 {
-	update(philo->global, philo->philo_id, EAT);
-	pthread_mutex_lock(&philo->global->data_mutex);
-	philo->last_meal = get_current_time();
-	pthread_mutex_unlock(&philo->global->data_mutex);
-	ft_usleep(philo->global->time_to_eat);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_lock(&philo->global->data_mutex);
-	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->global->data_mutex);
+	size_t	time;
+
+	time = get_current_time();
+	if ((int)time - philo->last_meal > philo->global->time_to_die)
+	{
+		pthread_mutex_lock(&philo->global->dead_flag_mutex);
+		philo->local_dead_flag = DEAD;
+		pthread_mutex_unlock(&philo->global->dead_flag_mutex);
+		return ;
+	}
+	else
+	{
+		update(philo->global, philo->philo_id, EAT);
+		philo->last_meal = get_current_time();
+		ft_usleep(philo->global->time_to_eat);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
+		pthread_mutex_lock(&philo->global->data_mutex);
+		philo->meals_eaten++;
+		pthread_mutex_unlock(&philo->global->data_mutex);
+	}
+	return ;
 }
 
 int	is_taking_the_forks(t_philo *philo)
 {
-	size_t	time;
-
-	time = get_current_time();
-	pthread_mutex_lock(&philo->global->dead_flag_mutex);
-	if ((int)time - philo->last_meal > philo->global->time_to_die)
+	if (philo->philo_id % 2 == 0)
 	{
-		philo->local_dead_flag = DEAD;
-		pthread_mutex_unlock(&philo->global->dead_flag_mutex);
-		return (1);
+		pthread_mutex_lock(philo->right_fork);
+		update(philo->global, philo->philo_id, FORK);
+		pthread_mutex_lock(philo->left_fork);
+		update(philo->global, philo->philo_id, FORK);
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->global->dead_flag_mutex);
-		if (philo->philo_id % 2 == 0)
-		{
-			if (philo->meals_eaten == 0)
-				usleep(200);
-			pthread_mutex_lock(philo->right_fork);
-			update(philo->global, philo->philo_id, FORK);
-			pthread_mutex_lock(philo->left_fork);
-			update(philo->global, philo->philo_id, FORK);
-		}
-		else
-		{
-			if (only_one(philo))
-				return (1);
-			if (philo->meals_eaten == 0
-				&& (philo->global->num_of_philo % 2) != 0 && philo->philo_id == 1)
-				usleep(philo->global->time_to_eat * 1000);
-			pthread_mutex_lock(philo->left_fork);
-			update(philo->global, philo->philo_id, FORK);
-			pthread_mutex_lock(philo->right_fork);
-			update(philo->global, philo->philo_id, FORK);
-		}
+		if (only_one(philo))
+			return (1);
+		if (philo->meals_eaten == 0)
+			ft_usleep(philo->global->time_to_eat);
+		pthread_mutex_lock(philo->left_fork);
+		update(philo->global, philo->philo_id, FORK);
+		pthread_mutex_lock(philo->right_fork);
+		update(philo->global, philo->philo_id, FORK);
 	}
-	return (0);
+return (0);
 }
 
 
@@ -80,4 +75,6 @@ void	is_sleeping(t_philo *philo)
 {
 	update(philo->global, philo->philo_id, SLE);
 	ft_usleep(philo->global->time_to_sleep);
+	if (philo->global->time_to_die > philo->global->time_to_sleep + philo->global->time_to_eat)
+		update(philo->global, philo->philo_id, THI);
 }

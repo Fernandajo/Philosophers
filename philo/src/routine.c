@@ -14,7 +14,7 @@ static void	*philo_routine(void *arg) //comer dormir pensar
 			continue;
 		is_eating(philo);
 		is_sleeping(philo);
-		update(global, philo->philo_id, THI);
+		//update(global, philo->philo_id, THI);
 	}
 	return (0);
 }
@@ -66,14 +66,16 @@ int	all_ate(t_global *global)
 	while (i < global->num_of_philo)
 	{
 		if (global->number_of_times_must_eat != -1)
-		{	pthread_mutex_lock(&global->dead_flag_mutex);
+		{	pthread_mutex_lock(&global->data_mutex);
 			if (global->philos[i].meals_eaten >= global->number_of_times_must_eat)
 			{
+				pthread_mutex_lock(&global->dead_flag_mutex);
 				global->dead_flag = DEAD;
+				pthread_mutex_unlock(&global->data_mutex);
 				pthread_mutex_unlock(&global->dead_flag_mutex);
 				return(DEAD);
 			}
-			pthread_mutex_unlock(&global->dead_flag_mutex);
+			pthread_mutex_unlock(&global->data_mutex);
 		}
 		i++;
 	}
