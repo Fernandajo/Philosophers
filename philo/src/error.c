@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fjoestin <fjoestin@student.42berlin.de>    +#+  +:+       +#+        */
+/*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/12 18:41:56 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/09/12 18:41:59 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/09/16 15:28:03 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,14 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
-	while(str[i])
+	while (str[i])
 		i++;
 	return (i);
 }
 
-
 void	ft_exit(t_global *global, int status, const char *message)
 {
-	if(global != NULL)
+	if (global != NULL)
 	{
 		if (global->fork_locks)
 			free_fork_locks(global);

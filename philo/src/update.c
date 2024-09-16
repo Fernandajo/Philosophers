@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   update.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/16 15:26:38 by fjoestin          #+#    #+#             */
+/*   Updated: 2024/09/16 15:27:48 by fjoestin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/philo.h"
 
@@ -5,7 +16,8 @@ void	update(t_global *global, int philo_id, const char *action)
 {
 	pthread_mutex_lock(&global->monitoring_mutex);
 	if (global->dead_flag == ALIVE)
-		printf("%zu %d %s\n", get_current_time() - global->start_time, philo_id, action);
+		printf("%zu %d %s\n", get_current_time() - 
+			global->start_time, philo_id, action);
 	pthread_mutex_unlock(&global->monitoring_mutex);
 }
 
@@ -55,9 +67,8 @@ int	is_taking_the_forks(t_philo *philo)
 		pthread_mutex_lock(philo->right_fork);
 		update(philo->global, philo->philo_id, FORK);
 	}
-return (0);
+	return (0);
 }
-
 
 int	only_one(t_philo *philo)
 {
@@ -75,6 +86,7 @@ void	is_sleeping(t_philo *philo)
 {
 	update(philo->global, philo->philo_id, SLE);
 	ft_usleep(philo->global->time_to_sleep);
-	if (philo->global->time_to_die > philo->global->time_to_sleep + philo->global->time_to_eat)
+	if (philo->global->time_to_die > philo->global->time_to_sleep + 
+		philo->global->time_to_eat)
 		update(philo->global, philo->philo_id, THI);
 }

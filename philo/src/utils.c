@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/16 15:32:57 by fjoestin          #+#    #+#             */
+/*   Updated: 2024/09/16 15:34:39 by fjoestin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/philo.h"
 
@@ -8,18 +19,19 @@ int	ft_isdigit(int c)
 	return (0);
 }
 
-int is_number(const char *str) 
+int	is_number(const char *str)
 	{
-    if (*str == '\0') {
-        return 0;
-    }
-    while (*str) {
-        if (!ft_isdigit(*str)) {
-            return 0;
-        }
-        str++;
-    }
-    return 1;
+	if (*str == '\0')
+	{
+		return (0);
+	}
+	while (*str)
+	{
+		if (!ft_isdigit(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 long	ft_atoi_philo(const char *str)

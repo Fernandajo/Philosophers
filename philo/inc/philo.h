@@ -53,7 +53,6 @@ typedef struct s_global {
 	t_philo			*philos;
 }					t_global;
 
-
 //Error
 int			ft_strlen(const char *str);
 void		ft_exit(t_global *global, int status, const char *message);
