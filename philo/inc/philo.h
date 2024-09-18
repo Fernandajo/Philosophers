@@ -63,8 +63,8 @@ int			is_number(const char *str);
 long		ft_atoi_philo(const char *str);
 int			ft_isdigit(int c);
 int			ft_usleep(size_t milliseconds);
-size_t		get_current_time(void);
-
+long		get_current_time(void);
+long		get_time_diff(long	start_time);
 //init_philo
 t_global	*init_global(int argc, char **argv, t_global *global);
 int			check_numbers(int argc, char **argv);
@@ -83,5 +83,9 @@ void		join_threads(t_global *global);
 void		monitor(t_global *global);
 int			all_ate(t_global *global);
 int			somebody_died(t_global *global);
+
+//locks
+int			dead_loop(t_philo *philo);
+int dead_loop_global(t_global *global);
 
 #endif

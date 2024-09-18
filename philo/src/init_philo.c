@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 15:28:10 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/09/16 15:32:47 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:06:06 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,9 +113,9 @@ int	somebody_died(t_global *global)
 		pthread_mutex_lock(&global->dead_flag_mutex);
 		if (global->philos[i].local_dead_flag == DEAD)
 		{
-			update(global, global->philos[i].philo_id, DIE);
 			global->dead_flag = DEAD;
 			pthread_mutex_unlock(&global->dead_flag_mutex);
+			printf("%ld %d %s\n", get_time_diff(global->start_time), global->philos[i].philo_id, DIE);
 			return (DEAD);
 		}
 		pthread_mutex_unlock(&global->dead_flag_mutex);

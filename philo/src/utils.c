@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 15:32:57 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/09/16 15:34:39 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:07:48 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,27 @@ int	ft_usleep(size_t milliseconds)
 	return (0);
 }
 
-size_t	get_current_time(void)
+long	get_current_time(void)
 {
-	struct timeval	time;
+	long int			time;
+	struct timeval		current_time;
 
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	time = 0;
+	gettimeofday(&current_time, NULL);
+	time = (current_time.tv_sec * 1000) + (current_time.tv_usec / 1000);
+	return (time);
+}
+
+
+long	get_time_diff(long	start_time)
+{
+	struct timeval	current_time;
+	long			current_time_ms;
+	long			ret;
+
+	gettimeofday(&current_time, NULL);
+	current_time_ms
+		= (current_time.tv_sec * 1000 + current_time.tv_usec / 1000);
+	ret = current_time_ms - start_time;
+	return (ret);
 }

@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 15:26:38 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/09/16 15:27:48 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:07:26 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,34 @@
 
 void	update(t_global *global, int philo_id, const char *action)
 {
-	pthread_mutex_lock(&global->monitoring_mutex);
-	if (global->dead_flag == ALIVE)
+	pthread_mutex_lock(&global->dead_flag_mutex);
+	if (global->dead_flag != DEAD)
+	{
 		printf("%zu %d %s\n", get_current_time() - 
 			global->start_time, philo_id, action);
-	pthread_mutex_unlock(&global->monitoring_mutex);
+	}
+	pthread_mutex_unlock(&global->dead_flag_mutex);
 }
 
 void	is_eating(t_philo *philo)
 {
-	size_t	time;
+	long    time_diff;
 
-	time = get_current_time();
-	if ((int)time - philo->last_meal > philo->global->time_to_die)
+
+	time_diff = get_time_diff(philo->global->start_time);
+	if ((time_diff - philo->last_meal) > philo->global->time_to_die)
 	{
 		pthread_mutex_lock(&philo->global->dead_flag_mutex);
 		philo->local_dead_flag = DEAD;
 		pthread_mutex_unlock(&philo->global->dead_flag_mutex);
+		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->left_fork);
 		return ;
 	}
 	else
 	{
 		update(philo->global, philo->philo_id, EAT);
-		philo->last_meal = get_current_time();
+		philo->last_meal = get_time_diff(philo->global->start_time);
 		ft_usleep(philo->global->time_to_eat);
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_unlock(philo->left_fork);
@@ -87,6 +92,6 @@ void	is_sleeping(t_philo *philo)
 	update(philo->global, philo->philo_id, SLE);
 	ft_usleep(philo->global->time_to_sleep);
 	if (philo->global->time_to_die > philo->global->time_to_sleep + 
-		philo->global->time_to_eat)
+		philo->global->time_to_eat	&& dead_loop(philo) == 0)
 		update(philo->global, philo->philo_id, THI);
 }

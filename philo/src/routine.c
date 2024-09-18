@@ -6,7 +6,7 @@
 /*   By: fjoestin <fjoestin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 15:29:52 by fjoestin          #+#    #+#             */
-/*   Updated: 2024/09/16 15:35:23 by fjoestin         ###   ########.fr       */
+/*   Updated: 2024/09/18 20:06:45 by fjoestin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	global = philo->global;
-	while (global->dead_flag != DEAD)
+	while (!dead_loop(philo))
 	{
 		if (is_taking_the_forks(philo))
 			continue ;
@@ -87,8 +87,8 @@ int	all_ate(t_global *global)
 			{
 				pthread_mutex_lock(&global->dead_flag_mutex);
 				global->dead_flag = DEAD;
-				pthread_mutex_unlock(&global->data_mutex);
 				pthread_mutex_unlock(&global->dead_flag_mutex);
+				pthread_mutex_unlock(&global->data_mutex);
 				return (DEAD);
 			}
 			pthread_mutex_unlock(&global->data_mutex);
