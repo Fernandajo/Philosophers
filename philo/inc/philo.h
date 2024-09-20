@@ -56,7 +56,6 @@ typedef struct s_global {
 //Error
 int			ft_strlen(const char *str);
 void		ft_exit(t_global *global, int status, const char *message);
-// static void	free_fork_locks(t_global *global);
 
 //Utils
 int			is_number(const char *str);
